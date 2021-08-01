@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 
 @SpringBootApplication
 public class SpringMqttApplication {
@@ -22,4 +23,10 @@ public class SpringMqttApplication {
                 .handle(m -> System.out.println(m.getPayload()))
 				.get();
 	}
+
+	@Bean
+	public IntegrationFlow mqttOutboundFlow() {
+		return f -> f.handle(new MqttPahoMessageHandler("tcp://host1:1883", "someMqttClient"));
+	}
+
 }
